@@ -1,0 +1,18 @@
+<section>
+  <h2>Mini Catalog</h2>
+
+  <div class="list">
+    <article *ngFor="let item of items; trackBy: trackById" class="item-card">
+      <img [src]="item.imageUrl" [alt]="item.title" />
+      <div class="meta">
+        <h3>{{ item.title }}</h3>
+        <p class="category">{{ item.category }}</p>
+        <p class="price">\${{ item.price }}</p>
+        <p class="rating">Rating: {{ item.rating }}/5</p>
+        <button (click)="toggleFavorite(item)" [attr.aria-pressed]="item.favorite">
+          {{ item.favorite ? '★ Unfavorite' : '☆ Favorite' }}
+        </button>
+      </div>
+    </article>
+  </div>
+</section>

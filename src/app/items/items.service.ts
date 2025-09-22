@@ -1,19 +1,30 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Item } from '../models/item.model';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class ItemsService {
+@Injectable({ providedIn: 'root' })
+export class ItemService {
+  private storageKey = 'mini-catalog-items';
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  loadInitial(): Observable<Item[]> {
-    return of([
-      { id: 1, title: 'Laptop', category: 'Electronics', price: 1200 },
-      { id: 2, title: 'Chair', category: 'Furniture', price: 150 },
-      { id: 3, title: 'Book', category: 'Education', price: 30 }
-    ]);
+  list(): Observable<Item[]> {
+    const saved = localStorage.getItem(this.storageKey);
+    if (saved) {
+      return of(JSON.parse(saved));
+    }
+    return this.http.get<Item[]>('/assets/items.json');
+  }
+
+  toggleFavorite(id: number) {
+    const saved = localStorage.getItem(this.storageKey);
+    if (!saved) return;
+    const items: Item[] = JSON.parse(saved);
+    const index = items.findIndex(i => i.id === id);
+    if (index > -1) {
+      items[index].favorite = !items[index].favorite;
+      localStorage.setItem(this.storageKey, JSON.stringify(items));
+    }
   }
 }

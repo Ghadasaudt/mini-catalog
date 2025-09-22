@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ItemsService } from '../items.service';
-import { Item } from '../models/item.model';
+
+import { ItemService } from '../items.service';  
+import { Item } from  '../../models/item.model';     
 
 @Component({
   selector: 'app-list',
@@ -22,13 +23,13 @@ export class ListComponent implements OnInit {
   constructor(private itemService: ItemService) {}
 
   ngOnInit() {
-    this.itemService.list().subscribe(items => {
+    this.itemService.list().subscribe((items: Item[]) => {
       this.items = items;
-      this.categories = Array.from(new Set(items.map(i => i.category))).sort();
+      this.categories = [...new Set(items.map(i => i.category))].sort();
     });
   }
 
-  filteredItems() {
+  filteredItems(): Item[] {
     let res = [...this.items];
     if (this.q) res = res.filter(i => i.title.toLowerCase().includes(this.q.toLowerCase()));
     if (this.category) res = res.filter(i => i.category === this.category);
@@ -44,6 +45,6 @@ export class ListComponent implements OnInit {
   trackById(index: number, item: Item) { return item.id; }
 
   toggleFavorite(item: Item) {
-    this.itemService.toggleFavorite(item.id); // ✅ matches service
+    this.itemService.toggleFavorite(item.id);
   }
 }
