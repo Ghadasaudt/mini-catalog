@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "title": "Acme Wireless Mouse",
+    "category": "Electronics",
+    "price": 79.99,
+    "rating": 4.3,
+    "description": "Ergonomic mouse with long battery life.",
+    "imageUrl": "https://picsum.photos/seed/mouse/600/400",
+    "favorite": false
+  },
+  {
+    "id": 2,
+    "title": "Solar Notebook",
+    "category": "Stationery",
+    "price": 12.5,
+    "rating": 4.7,
+    "description": "Eco-friendly notebook made with recycled paper.",
+    "imageUrl": "https://picsum.photos/seed/notebook/600/400",
+    "favorite": true
+  }
+]
+
