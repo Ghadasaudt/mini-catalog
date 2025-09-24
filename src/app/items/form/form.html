@@ -1,54 +1,57 @@
-<h2>{{ isEdit ? 'Edit item' : 'New item' }}</h2>
+<div class="form-container">
+  <h2>{{ isEdit ? 'Edit Item' : 'New Item' }}</h2>
 
-<form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-  <label>
-    Title
-    <input type="text" formControlName="title" aria-describedby="titleError" />
-  </label>
-  <div id="titleError" *ngIf="form.get('title')?.invalid && form.get('title')?.touched">
-    <small *ngIf="form.get('title')?.errors?.['required']">Title required.</small>
-    <small *ngIf="form.get('title')?.errors?.['minlength']">Min 3 chars.</small>
-    <small *ngIf="form.get('title')?.errors?.['maxlength']">Max 80 chars.</small>
-  </div>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      Title
+      <input type="text" formControlName="title" />
+      <span class="error" *ngIf="form.controls['title'].invalid && form.controls['title'].touched">
+        Title must be 3–80 characters.
+      </span>
+    </label>
 
-  <label>
-    Category
-    <input type="text" formControlName="category" />
-  </label>
-  <div *ngIf="form.get('category')?.invalid && form.get('category')?.touched">
-    <small>Category required.</small>
-  </div>
+    <label>
+      Category
+      <input type="text" formControlName="category" />
+      <span class="error" *ngIf="form.controls['category'].invalid && form.controls['category'].touched">
+        Category is required.
+      </span>
+    </label>
 
-  <label>
-    Price
-    <input type="number" step="0.01" formControlName="price" />
-  </label>
-  <div *ngIf="form.get('price')?.invalid && form.get('price')?.touched">
-    <small *ngIf="form.get('price')?.errors?.['required']">Price required.</small>
-    <small *ngIf="form.get('price')?.errors?.['min']">Must be > 0.</small>
-  </div>
+    <label>
+      Price
+      <input type="number" formControlName="price" step="0.01" />
+      <span class="error" *ngIf="form.controls['price'].invalid && form.controls['price'].touched">
+        Price must be greater than 0.
+      </span>
+    </label>
 
-  <label>
-    Rating
-    <input type="number" step="0.5" formControlName="rating" min="0" max="5" />
-  </label>
+    <label>
+      Rating
+      <input type="number" formControlName="rating" step="0.5" min="0" max="5" />
+      <span class="error" *ngIf="form.controls['rating'].invalid && form.controls['rating'].touched">
+        Rating must be between 0 and 5.
+      </span>
+    </label>
 
-  <label>
-    Description
-    <textarea formControlName="description" rows="4"></textarea>
-  </label>
-  <div *ngIf="form.get('description')?.invalid && form.get('description')?.touched">
-    <small *ngIf="form.get('description')?.errors?.['maxlength']">Max 500 chars.</small>
-  </div>
+    <label>
+      Description
+      <textarea formControlName="description"></textarea>
+      <span class="error" *ngIf="form.controls['description'].invalid && form.controls['description'].touched">
+        Description max length is 500.
+      </span>
+    </label>
 
-  <label>
-    Image URL (optional)
-    <input type="url" formControlName="imageUrl" />
-  </label>
-  <div *ngIf="form.get('imageUrl')?.invalid && form.get('imageUrl')?.touched">
-    <small>Must be a valid image URL (png/jpg/...)</small>
-  </div>
+    <label>
+      Image URL
+      <input type="url" formControlName="imageUrl" />
+      <span class="error" *ngIf="form.controls['imageUrl'].invalid && form.controls['imageUrl'].touched">
+        Must be a valid image URL.
+      </span>
+    </label>
 
-  <button type="submit" [disabled]="form.invalid">{{ isEdit ? 'Update' : 'Create' }}</button>
-  <a routerLink="/">Cancel</a>
-</form>
+    <button type="submit" [disabled]="form.invalid">
+      {{ isEdit ? 'Update' : 'Create' }}
+    </button>
+  </form>
+</div>

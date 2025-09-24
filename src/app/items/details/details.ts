@@ -9,7 +9,7 @@ import { Item } from '../../models/item.model';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './details.html',
-  //styleUrls: ['./details.scss']
+  styleUrls: ['./details.scss']
 })
 export class DetailsComponent implements OnInit {
   item?: Item;
@@ -17,9 +17,9 @@ export class DetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private itemsService: ItemsService) {}
 
   ngOnInit() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (!Number.isNaN(id)) {
-      this.item = this.itemsService.getById(id);
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      this.item = this.itemsService.getById(Number(idParam));
     }
   }
 }

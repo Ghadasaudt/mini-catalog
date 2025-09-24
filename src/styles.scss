@@ -1,6 +1,100 @@
-/* src/styles.scss - minimal global styles */
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-.no-select, .no-select * { -webkit-user-select: none; -ms-user-select: none; user-select: none; }
-.glass { -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
-.filtered { -webkit-filter: blur(5px); filter: blur(5px); }
-* { forced-color-adjust: auto; }
+/* Global reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background: #f5f7fa;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Titles */
+h1, h2, h3 {
+  font-weight: 600;
+  color: #222;
+}
+
+/* Links */
+a {
+  color: #007acc;
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #005fa3;
+  }
+}
+
+/* Buttons */
+button {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+}
+
+/* Primary and secondary colors */
+.btn-primary {
+  background: #007acc;
+  color: #fff;
+
+  &:hover {
+    background: #005fa3;
+  }
+}
+
+.btn-danger {
+  background: #d32f2f;
+  color: #fff;
+
+  &:hover {
+    background: #b71c1c;
+  }
+}
+
+/* Form inputs */
+input, textarea, select {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border 0.2s, box-shadow 0.2s;
+
+  &:focus {
+    border-color: #007acc;
+    box-shadow: 0 0 4px rgba(0, 122, 204, 0.3);
+    outline: none;
+  }
+}
+
+/* Error text */
+.error {
+  color: #d32f2f;
+  font-size: 0.875rem;
+}
+
+/* Card utility */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  margin: 1rem 0;
+}

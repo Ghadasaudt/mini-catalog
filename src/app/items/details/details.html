@@ -1,18 +1,9 @@
-<div *ngIf="item; else noItem" class="details">
+<div class="details-container" *ngIf="item">
   <h2>{{ item.title }}</h2>
-  <img *ngIf="item.imageUrl" [src]="item.imageUrl" [alt]="item.title" width="360" />
+  <img [src]="item.imageUrl" alt="{{ item.title }}" class="item-image" />
   <p><strong>Category:</strong> {{ item.category }}</p>
-  <p><strong>Price:</strong> \${{ item.price }}</p>
+  <p><strong>Price:</strong> ${{ item.price }}</p>
   <p><strong>Rating:</strong> {{ item.rating }} / 5</p>
   <p><strong>Description:</strong> {{ item.description }}</p>
-
-  <div class="detail-actions">
-    <a [routerLink]="['/items', item.id, 'edit']">Edit</a>
-    <a routerLink="/">Back to list</a>
-  </div>
+  <a routerLink="/">← Back to list</a>
 </div>
-
-<ng-template #noItem>
-  <p>Item not found.</p>
-  <a routerLink="/">Back to list</a>
-</ng-template>

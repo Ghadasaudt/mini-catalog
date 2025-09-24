@@ -9,7 +9,8 @@ import { Item } from '../../models/item.model';
   selector: 'app-form',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterModule],
-  templateUrl: './form.html'
+  templateUrl: './form.html',
+  styleUrls: ['./form.scss']
 })
 export class FormComponent implements OnInit {
   form!: FormGroup;
@@ -44,12 +45,15 @@ export class FormComponent implements OnInit {
 
   submit() {
     if (this.form.invalid) return;
+
     const data = this.form.value as Omit<Item, 'id' | 'favorite'>;
+
     if (this.isEdit && this.itemId != null) {
       this.itemsService.update({ ...data, id: this.itemId, favorite: false });
     } else {
       this.itemsService.create({ ...data, id: 0, favorite: false });
     }
+
     this.router.navigateByUrl('/');
   }
 }
