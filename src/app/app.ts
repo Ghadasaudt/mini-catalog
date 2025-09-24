@@ -1,21 +1,14 @@
 import { Component } from '@angular/core';
-import { ListComponent } from './items/list/list';
+import { RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ListComponent],
+  imports: [RouterModule, RouterOutlet],
   template: `
-    <main>
-      <h1>Mini Catalog</h1>
-      <app-list></app-list>
-    </main>
-  `,
-  styles: [`
-    main {
-      padding: 1rem;
-      font-family: Arial, sans-serif;
-    }
-  `]
+    <h1>Mini Catalog</h1>
+    <nav><a routerLink="/">Home</a> <a routerLink="/items/new">New Item</a></nav>
+    <router-outlet></router-outlet>
+  `
 })
 export class AppComponent {}

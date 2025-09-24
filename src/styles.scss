@@ -1,1 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+/* src/styles.scss - minimal global styles */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+.no-select, .no-select * { -webkit-user-select: none; -ms-user-select: none; user-select: none; }
+.glass { -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.filtered { -webkit-filter: blur(5px); filter: blur(5px); }
+* { forced-color-adjust: auto; }

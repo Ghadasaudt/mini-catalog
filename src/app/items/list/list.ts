@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-
-import { ItemService } from '../items.service';  
-import { Item } from  '../../models/item.model';     
+import { ItemsService } from '../items.service';
+import { Item } from '../../models/item.model';
 
 @Component({
   selector: 'app-list',
@@ -20,31 +19,37 @@ export class ListComponent implements OnInit {
   sort = '';
   categories: string[] = [];
 
-  constructor(private itemService: ItemService) {}
+  constructor(private itemsService: ItemsService) {}
 
   ngOnInit() {
-    this.itemService.list().subscribe((items: Item[]) => {
+    this.loadItems();
+  }
+
+  private loadItems() {
+    this.itemsService.list().subscribe((items: Item[]) => {
       this.items = items;
       this.categories = [...new Set(items.map(i => i.category))].sort();
     });
   }
 
-  filteredItems(): Item[] {
+  get filteredItems(): Item[] {
     let res = [...this.items];
     if (this.q) res = res.filter(i => i.title.toLowerCase().includes(this.q.toLowerCase()));
     if (this.category) res = res.filter(i => i.category === this.category);
-    if (this.sort) {
-      if (this.sort === 'price_asc') res.sort((a, b) => a.price - b.price);
-      if (this.sort === 'price_desc') res.sort((a, b) => b.price - a.price);
-      if (this.sort === 'rating_asc') res.sort((a, b) => a.rating - b.rating);
-      if (this.sort === 'rating_desc') res.sort((a, b) => b.rating - a.rating);
+    switch (this.sort) {
+      case 'price_asc': res.sort((a, b) => a.price - b.price); break;
+      case 'price_desc': res.sort((a, b) => b.price - a.price); break;
+      case 'rating_asc': res.sort((a, b) => a.rating - b.rating); break;
+      case 'rating_desc': res.sort((a, b) => b.rating - a.rating); break;
     }
     return res;
   }
 
-  trackById(index: number, item: Item) { return item.id; }
+  trackById = (_: number, item: Item) => item.id;
 
   toggleFavorite(item: Item) {
-    this.itemService.toggleFavorite(item.id);
+    this.itemsService.toggleFavorite(item.id);
+    // update local state immediately for UI
+    item.favorite = !item.favorite;
   }
 }
