@@ -1,39 +1,43 @@
-<!-- filters -->
-<div class="controls" role="region" aria-label="Filters">
-  <input [(ngModel)]="q" placeholder="Search by title" aria-label="Search by title" />
-  <select [(ngModel)]="category" aria-label="Filter by category">
-    <option value="">All categories</option>
-    <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
-  </select>
+<div class="list-container">
+  <h2>Catalog</h2>
 
-  <select [(ngModel)]="sort" aria-label="Sort items">
-    <option value="">Sort by</option>
-    <option value="price_asc">Price: low → high</option>
-    <option value="price_desc">Price: high → low</option>
-    <option value="rating_desc">Rating: high → low</option>
-    <option value="rating_asc">Rating: low → high</option>
-  </select>
+  <!-- Filters -->
+  <div class="filters">
+    <input
+      type="text"
+      [(ngModel)]="search"
+      placeholder="Search by title..."
+    />
 
-  <a routerLink="/items/new" class="new-link">New Item</a>
-</div>
+    <select [(ngModel)]="category">
+      <option value="">All Categories</option>
+      <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+    </select>
 
-<!-- list -->
-<ul class="items" role="list">
-  <li *ngFor="let item of filteredItems; trackBy: trackById" class="item-card" role="listitem">
-    <a [routerLink]="['/items', item.id]" class="item-link">
-      <img *ngIf="item.imageUrl" [src]="item.imageUrl" [alt]="item.title" width="140" />
-      <div class="meta">
-        <h3>{{ item.title }}</h3>
-        <p class="category">{{ item.category }}</p>
-        <p class="price">\${{ item.price }}</p>
-        <p class="rating">Rating: {{ item.rating }}/5</p>
+    <select [(ngModel)]="sortBy">
+      <option value="">Sort By</option>
+      <option value="price">Price (Low → High)</option>
+      <option value="rating">Rating (High → Low)</option>
+    </select>
+  </div>
+
+  <!-- Items -->
+  <div class="items-grid">
+    <div *ngFor="let item of filtered; trackBy: trackById" class="item-card">
+      <img [src]="item.imageUrl" [alt]="item.title" />
+      <h3>{{ item.title }}</h3>
+      <p class="category">{{ item.category }}</p>
+      <p class="price">\${{ item.price }}</p>
+      <p class="rating">⭐ {{ item.rating }}</p>
+      <p class="desc">{{ item.description }}</p>
+
+      <div class="actions">
+        <button (click)="toggleFav(item.id)">
+          <span [class.fav]="item.favorite">♥</span>
+          {{ item.favorite ? 'Unfavorite' : 'Favorite' }}
+        </button>
+      <!---  <a [routerLink]="['/items', item.id]">Details</a>  --->
       </div>
-    </a>
-
-    <div class="actions">
-      <button (click)="toggleFavorite(item)" [attr.aria-pressed]="item.favorite">
-        {{ item.favorite ? '★ Unfavorite' : '☆ Favorite' }}
-      </button>
     </div>
-  </li>
-</ul>
+  </div>
+</div>

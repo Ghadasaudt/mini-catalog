@@ -51,8 +51,9 @@ export class FormComponent implements OnInit {
     if (this.isEdit && this.itemId != null) {
       this.itemsService.update({ ...data, id: this.itemId, favorite: false });
     } else {
-      this.itemsService.create({ ...data, id: 0, favorite: false });
-    }
+  
+    this.itemsService.add({ ...data, id: 0, favorite: false });
+  }
 
     this.router.navigateByUrl('/');
   }

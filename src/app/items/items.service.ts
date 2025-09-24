@@ -1,65 +1,55 @@
-
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { Item } from '../models/item.model';
+import itemsData from '../../assets/items.json';
 
 @Injectable({ providedIn: 'root' })
 export class ItemsService {
-  private storageKey = 'mini-catalog-items';
+  private storageKey = 'miniCatalogItems';
+  private items: Item[] = [];
 
-  constructor(private http: HttpClient) {}
-
- 
-  list(): Observable<Item[]> {
-    const saved = this.load();
-    if (saved.length) {
-      return of(saved); // lol no http if already saved
-    }
-    return this.http.get<Item[]>('assets/items.json').pipe(
-      tap(items => this.save(items)) 
-    );
-  }
-
-  // careful: this just looks in localStorage (not async)
-  getById(id: number): Item | undefined {
-    return this.load().find(i => i.id === id);
-  }
-
-  create(item: Item): void {
-    const items = this.load();
-    // auto ID (hope no duplicates 🤞)
-    item.id = Math.max(0, ...items.map(i => i.id)) + 1;
-    items.push(item);
-    this.save(items);
-  }
-
-  update(updated: Item): void {
-    const items = this.load();
-    const index = items.findIndex(i => i.id === updated.id);
-    if (index > -1) {
-      items[index] = updated;
-      this.save(items);
-    }
-  }
-
-  toggleFavorite(id: number): void {
-    const items = this.load();
-    const index = items.findIndex(i => i.id === id);
-    if (index > -1) {
-      items[index].favorite = !items[index].favorite;
-      this.save(items);
-    }
-  }
-
- 
-  private load(): Item[] {
+  constructor() {
     const saved = localStorage.getItem(this.storageKey);
-    return saved ? JSON.parse(saved) : [];
+    if (saved) {
+      this.items = JSON.parse(saved);
+    } else {
+      this.items = itemsData;
+      this.save();
+    }
   }
 
-  private save(items: Item[]): void {
-    localStorage.setItem(this.storageKey, JSON.stringify(items));
+  private save() {
+    localStorage.setItem(this.storageKey, JSON.stringify(this.items));
+  }
+
+  getAll(): Item[] {
+    return [...this.items];
+  }
+
+  getById(id: number): Item | undefined {
+    return this.items.find(i => i.id === id);
+  }
+
+  add(item: Item) {
+    item.id = this.items.length
+      ? Math.max(...this.items.map(i => i.id)) + 1
+      : 1;
+    this.items.push(item);
+    this.save();
+  }
+
+  update(item: Item) {
+    const index = this.items.findIndex(i => i.id === item.id);
+    if (index !== -1) {
+      this.items[index] = item;
+      this.save();
+    }
+  }
+
+  toggleFavorite(id: number) {
+    const item = this.items.find(i => i.id === id);
+    if (item) {
+      item.favorite = !item.favorite;
+      this.save();
+    }
   }
 }

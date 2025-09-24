@@ -1,55 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ItemsService } from '../items.service';
-import { Item } from '../../models/item.model';
+import { Item } from '../../models/item.model';   
+import { ItemsService } from '../items.service'; 
 
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './list.html',
   styleUrls: ['./list.scss']
 })
-export class ListComponent implements OnInit {
+export class ListComponent {
   items: Item[] = [];
-  q = '';
+  search = '';
   category = '';
-  sort = '';
-  categories: string[] = [];
+  sortBy = '';
+  categories: string[] = []; 
 
-  constructor(private itemsService: ItemsService) {}
-
-  ngOnInit() {
-    this.loadItems();
+  constructor(private itemsService: ItemsService) {
+    this.items = this.itemsService.getAll();
+    this.categories = [...new Set(this.items.map(i => i.category))]; 
   }
 
-  private loadItems() {
-    this.itemsService.list().subscribe((items: Item[]) => {
-      this.items = items;
-      this.categories = [...new Set(items.map(i => i.category))].sort();
-    });
+  get filtered() {
+    return this.items
+      .filter(i =>
+        i.title.toLowerCase().includes(this.search.toLowerCase())
+      )
+      .filter(i =>
+        this.category ? i.category === this.category : true
+      )
+      .sort((a, b) => {
+        if (this.sortBy === 'price') return a.price - b.price;
+        if (this.sortBy === 'rating') return b.rating - a.rating;
+        return 0;
+      });
   }
 
-  get filteredItems(): Item[] {
-    let res = [...this.items];
-    if (this.q) res = res.filter(i => i.title.toLowerCase().includes(this.q.toLowerCase()));
-    if (this.category) res = res.filter(i => i.category === this.category);
-    switch (this.sort) {
-      case 'price_asc': res.sort((a, b) => a.price - b.price); break;
-      case 'price_desc': res.sort((a, b) => b.price - a.price); break;
-      case 'rating_asc': res.sort((a, b) => a.rating - b.rating); break;
-      case 'rating_desc': res.sort((a, b) => b.rating - a.rating); break;
-    }
-    return res;
+  trackById(_index: number, item: Item) {
+    return item.id;
   }
 
-  trackById = (_: number, item: Item) => item.id;
-
-  toggleFavorite(item: Item) {
-    this.itemsService.toggleFavorite(item.id);
-    // update local state immediately for UI
-    item.favorite = !item.favorite;
+  toggleFav(id: number) {
+    this.itemsService.toggleFavorite(id);
   }
 }
