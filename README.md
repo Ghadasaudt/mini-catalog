@@ -1,59 +1,69 @@
-# MiniCatalog
+# 📚 Mini Catalog
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.2.
+A small Angular app that lists items (like products/books), supports search/filter/sort, shows details, and includes a create/edit form with validation.  
+All data is persisted locally in `localStorage` — no backend required.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🚀 Features
+- **List Page (`/`)**
+  - Search items by title  
+  - Sort by price or rating  
+  - Filter by category  
+  - Toggle **favorites** (persisted in localStorage)  
 
+- **Details Page (`/items/:id`)**
+  - Show all item fields  
+  - Back navigation  
+
+- **Create & Edit (`/items/new`, `/items/:id/edit`)**
+  - Reactive Form with validation:
+    - `title`: required, 3–80 chars  
+    - `category`: required  
+    - `price`: > 0  
+    - `rating`: 0–5 (step 0.5)  
+    - `description`: ≤ 500 chars  
+    - `imageUrl`: optional, must be a valid image URL  
+
+- **Persistence**
+  - Loads initial data from `assets/items.json`  
+  - Saves changes to `localStorage`  
+
+- **Accessibility**
+  - Proper labels, semantic HTML, keyboard focus support  
+
+---
+
+## 🛠️ Tech Stack
+- Angular v16+ (standalone components)  
+- TypeScript (strict mode)  
+- Reactive Forms & Angular Router  
+- Local JSON + LocalStorage  
+- SCSS for styling  
+
+---
+
+## 📦 Setup & Run
+
+Clone the repo and install dependencies:
 ```bash
+git clone https://github.com/<your-username>/mini-catalog.git
+cd mini-catalog
+npm install
+Start a local dev server:
+
 ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+🧪 Testing
 
-## Code scaffolding
+Run unit tests:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
 ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Project Structure
+src/app/
+  items/
+    list/       → List page
+    details/    → Item details
+    form/       → Create & edit form
+  models/       → Item model
+  assets/       → Initial data (items.json)
